@@ -4,8 +4,9 @@ var ast = require('ast-types');
 var b   = ast.builders;
 
 function compile(tree) {
-	return Array.isArray(tree) ? b.callExpression(compile(tree[0]), tree.slice(1).map(compile))
+	return Array.isArray(tree) ? tree[0] === 'quote' ? b.arrayExpression(tree.slice(1).map(b.literal))
+	                                                 : b.callExpression(compile(tree[0]), tree.slice(1).map(compile))
 	                           : b.identifier(tree);
 }
 
-console.log(esc.generate(compile(sex('(a b (c 5))'))));
+console.log(esc.generate(compile(sex('\'(+ 5 6)'))));
