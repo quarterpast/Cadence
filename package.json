@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "ast-types": "^0.6.1",
+    "escodegen": "^1.4.1",
+    "s-expression": "^2.3.0"
+  }
+}
