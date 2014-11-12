@@ -25,10 +25,14 @@ function binary(op) {
 	};
 }
 
-function fn(args, body) {
+function fn(args, bodies) {
 	return b.functionExpression(
 		null, args,
-		b.blockStatement([b.returnStatement(body)])
+		b.blockStatement(
+			bodies.slice(0, -1)
+			.map(b.expressionStatement)
+			.concat(b.returnStatement(bodies.slice(-1)[0]))
+		)
 	)
 }
 
@@ -40,12 +44,12 @@ function compile {
 	['.', obj, ...rest]       => rest.reduce(dot(false), compile(obj)),
 	['@', obj, ...rest]       => rest.reduce(dot(true), compile(obj)),
 	['list', ...rest]         => b.arrayExpression(rest.map(compile)),
-	['λ', args, body]         => fn(compile(args).map(b.identifier), compile(body)),
-	['+', l, ...rest]            => rest.reduce(binary('+'), compile(l)),
+	['λ', args, ...body]      => fn(compile(args).map(b.identifier), body.map(compile)),
+	['+', l, ...rest]         => rest.reduce(binary('+'), compile(l)),
 	'#t'                      => b.literal(true),
 	[callee,  ...rest]        => b.callExpression(compile(callee), rest.map(compile)),
 	x if x instanceof String  => b.literal(String(x)),
 	x                         => b.identifier(x)
 }
 
-eval(esc.generate(compile(sex("((. console log) ((. (list 1 2 3) map) (λ '(a) (+ a 5))))"))));
+console.log(esc.generate(compile(sex("(λ '(a) (a 5) (a 6))"))));
