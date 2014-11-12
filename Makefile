@@ -5,10 +5,8 @@ SJS_OPTS = -m sparkler/macros -r
 
 all: lib/index.js
 
-run: lib/index.js
-	@hr
-	@node lib
-	@hr
+lib/cli.js: src/cli.js
+	cp $< $@
 
 lib/%.js: src/%.js
 	sjs $(SJS_OPTS) -o $@ $<

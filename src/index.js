@@ -1,7 +1,4 @@
-var sex = require('s-expression');
-var esc = require('escodegen');
-var ast = require('ast-types');
-var b   = ast.builders;
+var b   = require('ast-types').builders;
 
 function declare(name, val) {
 	return b.variableDeclaration(
@@ -52,4 +49,4 @@ function compile {
 	x                         => b.identifier(x)
 }
 
-console.log(esc.generate(compile(sex("(λ '(a) (a 5) (a 6))"))));
+module.exports = compile;
