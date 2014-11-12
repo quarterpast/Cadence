@@ -6,6 +6,8 @@
     "s-expression": "^2.3.0"
   },
   "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.0.1",
     "sparkler": "^0.3.4",
     "sweet.js": "^0.7.2"
   }
