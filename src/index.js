@@ -34,6 +34,7 @@ function fn(args, bodies) {
 }
 
 function compile {
+	e @ Error                 => { throw e; },
 	['=', name, val]          => declare(name, val),
 	[':=', name, val]         => b.assignmentExpression('=', compile(name), compile(val)),
 	['cond', cond, then, els] => b.conditionalExpression(compile(cond), compile(then), compile(els)),
