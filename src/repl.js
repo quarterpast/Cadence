@@ -11,7 +11,6 @@ module.exports = function(options) {
 		eval: function(cmd, context, filename, callback) {
 			var err, result;
 			try {
-				console.log(cmd)
 				var code = gen(compile(env)(sex(cmd.slice(1, -1))));
 
 				if(options.compile) {
