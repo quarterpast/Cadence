@@ -8,6 +8,7 @@
   "devDependencies": {
     "expect.js": "^0.3.1",
     "mocha": "^2.0.1",
+    "s-expression": "git://github.com/quarterto/s-expression",
     "sparkler": "^0.3.4",
     "sweet.js": "^0.7.2"
   }
