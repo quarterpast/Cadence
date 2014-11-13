@@ -4,7 +4,7 @@
     "camel-case": "^1.0.2",
     "escodegen": "^1.4.1",
     "minimist": "^1.1.0",
-    "s-expression": "^2.3.0"
+    "s-expression": "^2.5.1"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
