@@ -1,6 +1,7 @@
 var b   = require('ast-types').builders;
 var gen = require('escodegen').generate;
 var vm  = require('vm');
+var camelCase = require('camel-case');
 
 function quote(fn) {
 	return function {
@@ -35,7 +36,7 @@ function compiler(env) {
 
 	function mungeName {
 		'+' => '$plus',
-		x   => x
+		x   => camelCase(x)
 	}
 
 	function macro(name, args, body) {
@@ -62,7 +63,7 @@ function compiler(env) {
 		[m, ...rest] if env[m]    => env[m].apply(null, rest.map(compile)),
 		[callee,  ...rest]        => b.callExpression(compile(callee), rest.map(compile)),
 		x if x instanceof String  => b.literal(String(x)),
-		x                         => b.identifier(x)
+		x                         => b.identifier(mungeName(x))
 	}
 
 	return compile;
