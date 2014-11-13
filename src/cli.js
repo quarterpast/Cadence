@@ -17,7 +17,7 @@ if(argv.i || argv._.length === 0) {
 
 	var content = fs.readFileSync(argv._[0], 'utf8');
 	var lispAst = sex(content);
-	var jsAst   = compile(lispAst);
+	var jsAst   = compile({})(lispAst);
 	var code    = gen(wrapProgram(jsAst));
 
 	out.write(code);

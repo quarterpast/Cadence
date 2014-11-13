@@ -4,12 +4,15 @@ var compile = require('./index.js');
 var gen = require('escodegen').generate;
 var vm = require('vm');
 
+var env = {};
+
 module.exports = function(options) {
 	repl.start({
 		eval: function(cmd, context, filename, callback) {
 			var err, result;
 			try {
-				var code = gen(compile(sex(cmd.slice(1, -1))));
+				console.log(cmd)
+				var code = gen(compile(env)(sex(cmd.slice(1, -1))));
 
 				if(options.compile) {
 					result = code;
