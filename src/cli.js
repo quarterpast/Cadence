@@ -13,16 +13,17 @@ if(argv.i || argv._.length === 0) {
 	var gen = require('escodegen').generate;
 	var sex = require('s-expression');
 	var b = require('ast-types').builders;
+	var n = require('ast-types').namedTypes;
 
 
-	var content = fs.readFileSync(argv._[0], 'utf8');
-	var lispAst = sex(content);
-	var jsAst   = compile({})(lispAst);
-	var code    = gen(wrapProgram(jsAst));
+	var content  = fs.readFileSync(argv._[0], 'utf8');
+	var lispAst  = sex('(' + content + ')');
+	var compiler = compile({});
+	var jsAst    = lispAst.map(compiler).map(function(node) {
+		return n.Expression.check(node) ? b.expressionStatement(node)
+		       /* otherwise */          : node;
+	});
+	var code = gen(b.program(jsAst));
 
 	out.write(code);
-}
-
-function wrapProgram(a) {
-	return b.program([b.expressionStatement(a)]);
 }
