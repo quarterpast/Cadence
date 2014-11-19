@@ -22,6 +22,16 @@ function compiler(env) {
 		);
 	}
 
+	function curriedBuilder(name) {
+		return b.functionExpression(
+			b.identifier(name),
+			[b.identifier('$args')],
+			b.blockStatement([
+				b.returnStatement(builder(name, ['$args']))
+			])
+		);
+	}
+
 	function quasi {
 		['unquote', ...rest] => quote(compile)(rest),
 		x => x
@@ -30,13 +40,16 @@ function compiler(env) {
 	function jsLiteral {
 		x if x instanceof String => String(x),
 		['js!', ...rest]         => jsLiteral(rest),
+		[callee]                 => curriedBuilder(callee),
 		[callee, ...rest]        => builder(callee, rest),
 		x => x
 	}
 
 	function mungeName {
 		'+' => '$plus',
-		x   => camelCase(x)
+		'.' => '$dot',
+		x if x.indexOf('-') >= 0 => camelCase(x),
+		x => x
 	}
 
 	function macro(name, args, body) {

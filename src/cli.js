@@ -22,7 +22,6 @@ if(argv.i || argv._.length === 0) {
 	var b = require('ast-types').builders;
 	var n = require('ast-types').namedTypes;
 
-
 	var content  = fs.readFileSync(argv._[0], 'utf8');
 	var lispAst  = sex('(' + content + ')');
 	var compiler = compile({});
