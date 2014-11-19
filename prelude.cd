@@ -18,5 +18,7 @@
 		(js! blockStatement
 			,(list (js! returnStatement ,body)))))
 
-(λ '(a) a)
-(λ id '(a) a)
+(mac var '(name def)
+	(js! variableDeclaration
+		"var"
+		,(list (js! variableDeclarator ,name ,def))))

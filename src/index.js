@@ -2,6 +2,9 @@ var b   = require('ast-types').builders;
 var gen = require('escodegen').generate;
 var vm  = require('vm');
 var camelCase = require('camel-case');
+var fs  = require('fs');
+var path = require('path');
+var sex = require('s-expression');
 
 function quote(fn) {
 	return function {
@@ -48,6 +51,7 @@ function compiler(env) {
 	function mungeName {
 		'+' => '$plus',
 		'.' => '$dot',
+		'var' => '$var',
 		x if x.indexOf('-') >= 0 => camelCase(x),
 		x => x
 	}
@@ -88,6 +92,8 @@ function compiler(env) {
 		x if x instanceof String  => b.literal(String(x)),
 		x                         => b.identifier(mungeName(x))
 	}
+
+	sex('(' + fs.readFileSync(path.join(__dirname, '../prelude.cd'), 'utf8') + ')').map(compile);
 
 	return compile;
 }

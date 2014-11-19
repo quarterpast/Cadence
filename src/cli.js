@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var compile = require('./index.js');
 var fs = require('fs');
+var vm = require('vm');
 var argv = require('minimist')(process.argv.slice(2));
 
 function flatMap(xs, f) {
@@ -32,6 +33,10 @@ if(argv.i || argv._.length === 0) {
 	});
 	var code = gen(b.program(jsAst));
 
-	out.write(code);
-	out.write('\n');
+	if(argv.c) {
+		out.write(code);
+		out.write('\n');
+	} else {
+		eval(code);
+	}
 }
