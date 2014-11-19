@@ -1,0 +1,14 @@
+(mac . '(l r)
+	(js! memberExpression ,l ,r false))
+
+(mac list '()
+	(js! arrayExpression ,((. (. (Array) slice) call) arguments)))
+
+(mac λ '(args body)
+	(js! functionExpression
+		null
+		,((. args map) (js! identifier))
+		(js! blockStatement
+			,(list (js! returnStatement ,body)))))
+
+(λ '(a) a)
