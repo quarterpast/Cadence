@@ -11,4 +11,12 @@
 		(js! blockStatement
 			,(list (js! returnStatement ,body)))))
 
+(mac λ '(name args body)
+	(js! functionDeclaration
+		,name
+		,((. args map) (js! identifier))
+		(js! blockStatement
+			,(list (js! returnStatement ,body)))))
+
 (λ '(a) a)
+(λ id '(a) a)

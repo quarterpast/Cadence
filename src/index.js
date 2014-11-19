@@ -66,14 +66,24 @@ function compiler(env) {
 		});
 	}
 
+	function getMacro(name, length) {
+		return env[name] && (env[name][length] || env[name][0]);
+	}
+
 	function compile {
 		e @ Error                 => { throw e; },
-		['mac', name, args, body] => { env[name] = macro(name, compile(args), compile(body)); return b.emptyStatement(); },
+		['mac', name, args, body] => {
+			var mac = macro(name, compile(args), compile(body));
+			var len = mac.length;
+			env[name] = env[name] || {};
+			env[name][len] = mac;
+			return b.emptyStatement();
+		},
 		['quote', ...rest]        => rest,
 		['unquote', ...rest]      => quote(compile)(rest),
 		['quasiquote', ...rest]   => quasi(rest),
 		['js!', ...rest]          => jsLiteral(rest),
-		[m, ...rest] if env[m]    => env[m].apply(null, rest.map(compile)),
+		[m, ...rest] if mac = getMacro(m, rest.length) => mac.apply(null, rest.map(compile)),
 		[callee,  ...rest]        => b.callExpression(compile(callee), rest.map(compile)),
 		x if x instanceof String  => b.literal(String(x)),
 		x                         => b.identifier(mungeName(x))
