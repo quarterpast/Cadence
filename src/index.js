@@ -51,6 +51,8 @@ function compiler(env) {
 	function mungeName {
 		'+' => '$plus',
 		'.' => '$dot',
+		'*' => '$star',
+		'-' => '$minus',
 		'var' => '$var',
 		x if x.indexOf('-') >= 0 => camelCase(x),
 		x => x
