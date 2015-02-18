@@ -8,9 +8,11 @@ JS_LIB = $(patsubst src/%.js,lib/%.js,$(JS_SRC))
 all: $(JS_LIB)
 
 lib/cli.js: src/cli.js
+	@mkdir -p ${@D}
 	cp $< $@
 
 lib/%.js: src/%.js
+	@mkdir -p ${@D}
 	sjs $(SJS_OPTS) -o $@ $<
 	@echo $@ done
 
