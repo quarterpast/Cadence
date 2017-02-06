@@ -22,3 +22,6 @@
 	(js! variableDeclaration
 		"var"
 		,(list (js! variableDeclarator ,name ,def))))
+
+(mac import '(name)
+	`(var ,name (require (js! literal name))))

@@ -26,6 +26,7 @@ function compiler(env) {
 	}
 
 	function curriedBuilder(name) {
+		console.log(name);
 		return b.functionExpression(
 			b.identifier(name),
 			[b.identifier('$args')],
@@ -59,6 +60,7 @@ function compiler(env) {
 	}
 
 	function macro(name, args, body) {
+		console.log(body);
 		var fn = b.expressionStatement(b.functionExpression(
 			b.identifier(mungeName(name)),
 			args.map(b.identifier),
